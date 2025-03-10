@@ -1,8 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser } from "../redux/authSlice";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -10,8 +11,11 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
+   
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {loading,error} = useSelector((state)=>state.auth);
+
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -24,35 +28,12 @@ const Signup = () => {
       toast.error("All fields are required!");
       return;
     }
-
-    try {
-      setLoading(true);
-
-      const payload = {
-        name: input.username,
-        email: input.email,
-        password: input.password,
-      };
-
-      const res = await axios.post("http://localhost:3000/api/user/signup", payload, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-
- 
-
-      if (res.data.status) {  
-        toast.success(res.data.message);
-        setInput({ username: "", email: "", password: "" });
-        navigate("/login");
-      } else {
-        toast.error(res.data.message);  
-      }
-    } catch (error) {
-      console.error("Signup Error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong!");
-    } finally {
-      setLoading(false);
+    const result = await dispatch(signupUser(input));
+    if(signupUser.fulfilled.match(result)){
+      toast.success("Signup successful!");
+      navigate("/login");
+    }else{
+      toast.error(error);
     }
   };
 

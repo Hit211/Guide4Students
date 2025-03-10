@@ -1,10 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/authSlice";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -12,7 +11,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
+  const {loading,error} = useSelector((state)=>state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,34 +27,19 @@ const Login = () => {
       return;
     }
 
-    try {
-      setLoading(true);
+    const payload = {
+      email: input.email,
+      password : input.password,
+    }
 
-     
-      const payload = {
-        email: input.email,
-        password: input.password,
-      };
-
-      const res = await axios.post("http://localhost:3000/api/user/login", payload, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-
-
-      if (res.data.success) {  
-        toast.success(res.data.message);
-        setInput({ email: "", password: "" });
-        dispatch(login({user:res.data.user,token:res.data.token}));
-        navigate("/dashboard");
-      } else {
-        toast.error(res.data.message);  
-      }
-    } catch (error) {
-      console.error("Login Error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong!");
-    } finally {
-      setLoading(false);
+    const result = await dispatch(loginUser(payload));
+    
+    if(loginUser.fulfilled.match(result)){
+      toast.success(`Welcome back ${result.payload.user.name}`);
+      setInput({email:"",password:""});
+      navigate("/dashboard");
+    }else{
+      toast.error(error || "Login failed!")
     }
   };
 
