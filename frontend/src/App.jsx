@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Intro from './pages/Intro'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Roadmap from './pages/Dashboard/Roadmap'
-import Development from './pages/Development/Development'
 import Advice from './pages/Dashboard/Advice'
 import News from './pages/Dashboard/News'
 import Signup from './pages/SignUp'
@@ -14,6 +13,7 @@ import AdminLogin from "./Admin/AdminLogin";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import AdminRoutes from "./Admin/AdminRoutes";
 import AdminServices from "./pages/Admin/AdminServices";
+import MainPage from "./pages/Dashboard/MainPage";
 // import ProtectedAdminRoute from "./ProtectedRoute/ProtectedAdminRoute";
 const App = () => {
   return (
@@ -36,7 +36,7 @@ const App = () => {
         } />
         <Route path="/dashboard/roadmap/:id" element={
           <ProtectedRoute>
-            <Development />
+            <MainPage/>
           </ProtectedRoute>
         } />
         <Route path="/dashboard/advice" element={

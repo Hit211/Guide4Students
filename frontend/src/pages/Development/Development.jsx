@@ -35,7 +35,7 @@ const Development = () => {
     };
     fetchData();
   }, [selectedCategory]);
-
+ 
   useEffect(() => {
     const fetchResources = async () => {
       setLoadingResources(true);
@@ -53,7 +53,7 @@ const Development = () => {
       }
     };
     fetchResources();
-  }, [selectedCategory]);
+  }, [selectedCategory, selectedCategory.resources]);
 
   const handleNext = () => {
     if (page < Math.ceil(resources.length / itemsPerPage) - 1) {
@@ -136,14 +136,17 @@ const Development = () => {
 
         <h1 className="text-xl font-bold mt-2 mb-0">Resources:-</h1>
         <div className="mt-6 flex items-center justify-center relative">
-          <button
+          {
+            resources &&
+            <button
             className="absolute left-[-20px] bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 disabled:opacity-0 z-10000"
             onClick={handlePrev}
             disabled={page === 0}
           >
+          
             <ChevronLeft className="w-4 h-4" />
           </button>
-
+          }
           {loadingResources ? (
             <p className="text-gray-500">Loading resources...</p>
           ) : errorResources ? (
@@ -158,13 +161,16 @@ const Development = () => {
             <p className="mt-4">No resources available.</p>
           )}
 
-          <button
+          {
+            resources &&
+            <button
             className="absolute right-[-20px] bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 disabled:opacity-0"
             onClick={handleNext}
             disabled={page >= Math.ceil(resources.length / itemsPerPage) - 1}
           >
             <ChevronRight className="w-4 h-4" />
           </button>
+          }
         </div>
       </main>
     </div>
