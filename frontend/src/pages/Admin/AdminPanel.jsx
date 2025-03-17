@@ -10,6 +10,11 @@ const AdminPanel = () => {
          <h1>Path to the Services</h1>
         </Link>
       </div>
+      <div>
+        <Link to="mentor">
+          <h1>Path to the MentorCard</h1>
+        </Link>
+      </div>
     </div>
   )
 }

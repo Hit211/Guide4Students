@@ -1,7 +1,38 @@
-import { Link as ScrollLink } from "react-scroll"; 
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link as ScrollLink } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom"; 
 
+// Register the plugin
+gsap.registerPlugin(ScrollTrigger);
+
 const Intro = () => {
+  const sectionRefs = useRef([]);
+
+  useEffect(() => {
+    sectionRefs.current.forEach((section) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            end: "top 30%",
+            toggleActions: "play none none none", 
+            once:true
+          },
+        }
+      );
+    });
+  }, []);
+  
+
   return (
     <div>
       <div className="w-full bg-black shadow-md fixed top-0 left-0 z-50">
@@ -90,6 +121,7 @@ const Intro = () => {
         {/* Buckets Section */}
         <div
           id="buckets"
+          ref={(el)=> (sectionRefs.current[0]=el)}
           className="max-w-screen-xl mx-auto py-16 text-center text-white"
         >
           <h2 className="text-3xl font-extrabold mb-4 text-yellow-400 drop-shadow-lg">
@@ -157,7 +189,9 @@ const Intro = () => {
         </div>
       </div>
 
-      <div id="about" className="bg-black min-h-screen py-16">
+      <div 
+      ref={(el)=> (sectionRefs.current[1]=el)}
+      id="about" className="bg-black min-h-screen py-16">
         <div className="max-w-screen-xl mx-auto px-6">
           {/* Title */}
           <h1 className="text-4xl font-extrabold text-yellow-500 mb-12 text-center">
@@ -218,7 +252,9 @@ const Intro = () => {
         </div>
       </div>
       {/* Contact Section */}
-      <div id="contact" className="bg-black min-h-screen py-16">
+      <div id="contact" 
+      ref={(el)=> (sectionRefs.current[2]=el)}
+      className="bg-black min-h-screen py-16">
         <div className="max-w-screen-xl mx-auto px-6">
           {/* Title Section */}
           <div className="text-center mb-12">
@@ -231,7 +267,9 @@ const Intro = () => {
           </div>
 
           {/* Form Section */}
-          <form className="bg-black p-8 rounded-lg shadow-2xl max-w-xl mx-auto space-y-6">
+          <form 
+          ref={(el)=> (sectionRefs.current[3]=el)}
+          className="bg-black p-8 rounded-lg shadow-2xl max-w-xl mx-auto space-y-6">
             <div className="mb-4">
               <input
                 type="text"

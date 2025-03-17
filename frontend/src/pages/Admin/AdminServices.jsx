@@ -1,48 +1,22 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteService, fetchServices, updateStatus } from "../../redux/serviceSlice";
 
 const AdminServices = () => {
-  const [services, setServices] = useState([]);
+  const {services,loading,error} = useSelector((state)=>state.service);
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/api/advice/allservices"); 
-        setServices(res.data.contact);
-      } catch (error) {
-        toast.error("Failed to fetch services");
-        console.log(error);
-      }
-    };
+  const dispatch = useDispatch();
 
-    fetchServices();
-  }, []);
+  useEffect(()=>{
+    dispatch(fetchServices());
+  },[dispatch]);
 
-  const updateStatus = async (id) => {
-    try {
-      await axios.patch(`http://localhost:3000/api/advice/${id}/status`, { status: "completed" });
-      setServices((prev) =>
-        prev.map((service) =>
-          service._id === id ? { ...service, status: "completed" } : service
-        )
-      );
-      toast.success("Service marked as completed");
-    } catch (error) {
-      toast.error("Failed to update status");
-      console.log(error);
-    }
-  };
+  const handleUpdateStatus = (id)=>{
+    dispatch(updateStatus(id));
+  }
 
-  const deleteServices = async(id)=>{
-    try {
-      await axios.delete(`http://localhost:3000/api/advice/${id}/delete`);
-      setServices((prev)=>
-      prev.filter((service)=>
-      service._id!==id))
-    } catch (error) {
-      toast.error("Failed to delete",error);
-    }
+  const handleDeleteServices = async(id)=>{
+    dispatch(deleteService(id));
   }
 
   const pendingServices = services.filter((service) => service.status === "pending");
@@ -51,6 +25,9 @@ const AdminServices = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
+    
+      {loading && <p className="text-center">🥶</p>}
+      {error && <p className="text-red-500 text-center">Error: {error}</p>}
 
       <div className="mb-6">
         <h3 className="text-xl font-semibold mb-2 text-red-500">Pending Services</h3>
@@ -75,7 +52,7 @@ const AdminServices = () => {
                     <td className="border px-4 py-2">{service.message}</td>
                     <td className="border px-4 py-2">
                       <button
-                        onClick={() => updateStatus(service._id)}
+                        onClick={() => handleUpdateStatus(service._id)}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                       >
                         Mark Completed
@@ -120,7 +97,7 @@ const AdminServices = () => {
                     <td className="border px-4 py-2 text-green-500 font-bold">Completed</td>
                     <td className="border px-4 py-2">
                       <button
-                        onClick={() => deleteServices(service._id)}
+                        onClick={() => handleDeleteServices(service._id)}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                       >
                         Delete

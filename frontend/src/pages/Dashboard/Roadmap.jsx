@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import gsap from "gsap";
 
 const Roadmap = () => {
   const [roadmapItems, setRoadmapItems] = useState([]);
@@ -8,12 +9,13 @@ const Roadmap = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();  
   const navigate = useNavigate();
+  const itemRefs = useRef([]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchRoadmap = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/roadmaps/getmaps");
-
         if (response.data.success) {
           setRoadmapItems(response.data.roadmap);
         } else {
@@ -26,21 +28,43 @@ const Roadmap = () => {
         setLoading(false);
       }
     };
-
     fetchRoadmap();
   }, []);
+
+  useEffect(() => {
+    const validRefs = itemRefs.current.filter(Boolean);
+    if (validRefs.length) {
+      if (containerRef.current) containerRef.current.style.overflowX = "hidden";
+      if (containerRef.current) containerRef.current.style.overflowY = "hidden";
+      gsap.fromTo(
+        validRefs,
+        {
+          opacity: 0,
+          y: 50,
+          x: (i) => (i % 2 === 0 ? -100 : 100), 
+        },
+        {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          stagger: 0.3, 
+          duration: 2,
+          ease: "power2.out",
+        }
+      );
+    }
+  }, [roadmapItems]);
 
   const filteredItems = id
     ? roadmapItems.filter((item) => item._id === id)
     : roadmapItems;
 
-   console.log("id:", id);
-   console.log("filteredItems:",filteredItems);
-   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-10">
+    <div 
+    ref={containerRef}
+    className="min-h-screen flex items-center justify-center bg-gray-50 p-10">
       <div className="max-w-6xl w-full">
-        <h1 className="text-3xl font-bold text-center text-blue-800 mb-8">
+        <h1 className="text-4xl font-extrabold text-center text-blue-800 mb-10">
           Explore Roadmaps & Resources
         </h1>
 
@@ -49,14 +73,19 @@ const Roadmap = () => {
         ) : error ? (
           <p className="text-center text-red-600">{error}</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {filteredItems.map((item) => (
+          <div className="flex flex-col gap-10">
+            {filteredItems.map((item, index) => (
               <div
                 key={item._id}
-                className="relative bg-blue-600 text-white p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-95 hover:shadow-2xl"
+                ref={(el) => (itemRefs.current[index] = el)}
+                className={`relative p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  index % 2 === 0
+                    ? "ml-0 mr-auto bg-gradient-to-r from-blue-500 to-indigo-600"
+                    : "ml-auto mr-0 mt-[-30px] bg-gradient-to-r from-purple-500 to-pink-600"
+                } w-[80%] text-white`}
                 onClick={() => navigate(`/dashboard/roadmap/${item._id}`)}
               >
-                <h2 className="text-lg font-semibold text-center">{item.name}</h2>
+                <h2 className="text-xl font-semibold text-center">{item.name}</h2>
               </div>
             ))}
           </div>

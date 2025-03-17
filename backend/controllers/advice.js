@@ -5,10 +5,6 @@ dotenv.config();
 
 export const sendContactRequest = async (req, res) => {
   try {
-
-    console.log("Received data:", req.body);
-    console.log("Received file:", req.file);
-
     const { name, email, service, message, interviewDateTime, discoveryCallDateTime, mentorshipTopics, prepTopics, topicsLearned, urgency } = req.body;
     const resumeurl = req.file ? req.file.path : null;
 
