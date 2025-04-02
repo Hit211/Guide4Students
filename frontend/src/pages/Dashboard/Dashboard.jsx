@@ -60,6 +60,7 @@ const Dashboard = () => {
         </div>
         </Link>
   
+        <Link to="/dashboard/opensource">
         <div className="p-8 bg-black shadow-2xl rounded-lg border-2 border-gray-300 hover:shadow-xl transition-shadow duration-300 cursor-pointer">
           <h3 className="text-2xl font-semibold text-yellow-500 mb-4">
             Want To Know About Open-Source Contribution??
@@ -68,6 +69,7 @@ const Dashboard = () => {
             Discover opportunities to contribute to impactful open-source projects, enhance your skills, and network with professionals.
           </p>
         </div>
+        </Link>
 
         <div className="p-8 bg-black shadow-2xl rounded-lg border-2 border-gray-300 hover:shadow-xl transition-shadow duration-300 cursor-pointer">
           <h3 className="text-2xl font-semibold text-yellow-500 mb-4">

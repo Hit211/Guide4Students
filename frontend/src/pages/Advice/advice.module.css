@@ -1,0 +1,17 @@
+.main-container {
+    margin-left: auto; 
+  }
+  
+  @media (min-width: 375px) { 
+    .main-container {
+      margin-top: -1.5%;  
+      margin-left: 33px;
+    }
+  }
+  
+  @media (min-width: 1024px) { 
+    .main-container {
+      margin-left: 12px;
+    }
+  }
+  

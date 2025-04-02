@@ -3,8 +3,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link as ScrollLink } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom"; 
+import logoicon  from "../../../src/assets/Logo.webp";
 
-// Register the plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const Intro = () => {
@@ -36,10 +36,11 @@ const Intro = () => {
   return (
     <div>
       <div className="w-full bg-black shadow-md fixed top-0 left-0 z-50">
-        <div className="w-[92%] mx-auto h-[70px] flex justify-between items-center p-5">
-          {/* Logo */}
-          <div className="text-2xl font-bold text-white">Guide4Students</div>
-
+        <div className="w-[92%] relative mx-auto h-[70px] flex justify-between items-center p-5">
+        <div className="flex items-center gap-3">
+  <img src={logoicon} alt="Logo" className="w-[40px] h-[40px] object-contain"/>
+  <span className="text-2xl font-bold text-white">Guide4Students</span>
+</div>
           <div className="md:flex hidden items-center gap-8">
             <ul className="flex gap-8 text-lg font-medium text-white">
               <li>

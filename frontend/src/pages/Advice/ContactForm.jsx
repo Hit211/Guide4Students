@@ -50,7 +50,7 @@ const ContactForm = ({ service, onSubmit,  extraFields }) => {
           <input name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded" required />
           <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-2 border rounded" required />
           <textarea name="message" placeholder="Your Message" value={formData.message} onChange={handleChange} className="w-full p-2 border rounded" required />
-  
+           
           {extraFields[service] &&
             (Array.isArray(extraFields[service]) ? (
               extraFields[service].map((field, index) => (

@@ -18,8 +18,7 @@ const AdminMentor = () => {
    ):(
     <div className="p-3">
      <h1 className="bg-gray-300 mb-2 text-center h-full">Create Admin:-</h1>
-    <div className="h-[500px] bg-gray-500 w-full p-2">
-        
+    <div className="h-[500px] bg-gray-500 w-full p-2">   
     </div>
 
     <div className="overflow-x-hidden mt-3 text-center">

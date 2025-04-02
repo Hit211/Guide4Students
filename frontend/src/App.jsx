@@ -15,8 +15,20 @@ import News from "./pages/News/News";
 import Intro from "./pages/Intro/Intro";
 import Advice from "./pages/Advice/Advice";
 import AdminLogin from "./AdminLogin/AdminLogin";
+import OpenSource from "./pages/OpenSource/OpenSource";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { login } from "./redux/authSlice";
 // import ProtectedAdminRoute from "./ProtectedRoute/ProtectedAdminRoute";
 const App = () => {
+  const dispatch = useDispatch();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            dispatch(login({ token }));  
+        }
+    }, [dispatch]);
   return (
     <Router>
        <Routes>
@@ -43,6 +55,11 @@ const App = () => {
         <Route path="/dashboard/advice" element={
           <ProtectedRoute>
             <Advice/>
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/opensource" element={
+          <ProtectedRoute>
+            <OpenSource/>
           </ProtectedRoute>
         } />
         <Route path="/dashboard/news" element={
