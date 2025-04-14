@@ -8,7 +8,6 @@ import { login } from "../redux/authSlice";
 
 const Login = () => {
   const [input, setInput] = useState({
-    username: "",
     email: "",
     password: "",
   });
@@ -46,6 +45,7 @@ const Login = () => {
       if (res.data.success) {  
         toast.success(res.data.message);
         setInput({ email: "", password: "" });
+        console.log(res.data);
         dispatch(login({user:res.data.user,token:res.data.token}));
         navigate("/dashboard");
       } else {

@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import {toast} from "sonner";
 import Reviewer from "./Reviewer";
 import { Menu,X } from "lucide-react";
 import styles from "./advice.module.css";
-
+import TrackingProgress from "./TrackingProgress";
+import { useSelector } from "react-redux";
 const services = [
   { name: "Ask Me Anything", icon: "💡" },
   { name: "Priority Messages", icon: "📩" },
@@ -31,70 +32,19 @@ const extraFields = {
     options: ["Low", "Medium", "High", "Critical"],
   },
 };
-
-const TrackingProgress = ({ selectedService,onReset }) => {
-  const [status,setStatus] = useState("pending");
-  const getServices = async()=>{
-    try {
-      const res = await axios.get("http://localhost:3000/api/advice/allservices");
-      const services = res.data.contact;
-      const service = services.find((s)=>s.service.toLowerCase()=== selectedService.toLowerCase());
-      if(service){
-        setStatus(service.status);
-      }else{
-        setStatus("pending");
-      }
-    } catch (error) {
-        toast.error(error.message);
-    }
-  }
-
-  useEffect(()=>{
-     getServices();
-  },[]);
-
-  return (
-    <div className="bg-white p-6 shadow-md rounded-lg mt-4">
-      <h2 className="text-xl font-semibold mb-4">Your Progress</h2>
-      <div className="flex justify-between items-center border p-4 rounded-md">
-        <div className="w-1/2">
-          <h3 className="font-bold text-lg">{selectedService}</h3>
-{/*           
-          {formData?.message && (
-             <p className="text-gray-600 text-sm truncate w-64">
-               {formData.message.length > 100 ? formData.message.substring(0, 100) + "..." : formData.message}
-             </p>
-          )} */}
-
-        </div>
-        <div className="w-1/2 flex items-center justify-end">
-          <span className={`px-4 py-2 rounded ${status === "completed" ? "bg-green-500" : "bg-yellow-500"} text-white`}>
-            {status}
-          </span>
-        </div>
-      </div>
-      {status === "completed" && (
-        <button onClick={onReset} className="bg-blue-500 text-white px-4 py-2 rounded mt-4">
-          Start New Request
-        </button>
-      )}
-    </div>
-  );
-};
-
 const Advice = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [requests, setRequests] = useState({});
   const [menuOpen,setMenuOpen] = useState(false);
   const sidebarRef = useRef(null);
-
+  const userId = useSelector((state)=> state.auth.user?._id);
+  
   // useEffect(() => {
   //   const savedRequests = localStorage.getItem("requests");
   //   if (savedRequests) {
   //     setRequests(JSON.parse(savedRequests));
   //   }
   // }, []);
-
   const handleFormSubmit = async (service, data) => {
     if (!service || !data.get("message")) {
       toast.error("Service and message are required.");
@@ -140,7 +90,7 @@ const Advice = () => {
     <div className="flex min-h-screen bg-gray-100 relative" onClick={handleWrapClick}>
        {!menuOpen && (
         <button
-          className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md"
+          className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
             setMenuOpen(true)}}
@@ -151,13 +101,13 @@ const Advice = () => {
 
 <aside
   ref={sidebarRef}
-  className={`bg-white p-4 shadow-md fixed left-0 min-h-screen w-64 z-50 transition-transform duration-300 md:translate-x-0 ${
+  className={`bg-white p-4 shadow-md fixed left-0 min-h-screen w-64 z-50 transition-transform duration-300 ${
     menuOpen ? "translate-x-0" : "-translate-x-full"
-  } md:w-1/4 md:relative`}
+  } md:translate-x-0 md:w-1/4 md:relative`}  
   onClick={(e) => e.stopPropagation()}
 >
   <div className="md:hidden flex justify-end">
-    <button className="p-2" onClick={() => setMenuOpen(false)}>
+    <button className="p-2 cursor-pointer" onClick={() => setMenuOpen(false)}>
       <X size={20} />
     </button>
   </div>
@@ -182,6 +132,7 @@ const Advice = () => {
   {!selectedService && <p className="text-lg text-gray-600">Please select a service from the sidebar to proceed.</p>}
   {requests[selectedService] ? (
     <TrackingProgress
+      userId={userId}
       selectedService={selectedService}
       formData={requests[selectedService].formData}
       status={requests[selectedService].status}

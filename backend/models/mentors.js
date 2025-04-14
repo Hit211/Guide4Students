@@ -18,14 +18,7 @@ const mentorSchema = new mongoose.Schema({
     },
     mentorshipProvided:{
         type:Number,
-    },
-    rating:{
-        type:Number,
-        min:1,
-        max:5
-    },
-    comment:{
-        type:String,
+        default:0
     },
     linkedInUrl:{
         type:String,
@@ -47,7 +40,18 @@ const mentorSchema = new mongoose.Schema({
     },
     available:{
         type:String
-    }
+    },
+    company:{
+        type:String
+    },
+    totalrating:{
+        type:Number,
+        default:0
+    },
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review" 
+    }]
 });
 
 const Mentor = mongoose.model("Mentor",mentorSchema);

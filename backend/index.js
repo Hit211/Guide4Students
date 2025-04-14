@@ -12,6 +12,7 @@ import communityRoute from "./routers/community.js";
 import adviceRoute from "./routers/advice.js";
 import adminRoute from "./routers/admin.js";
 import mentorRoute from "./routers/mentor.js";
+import reviewRoute from "./routers/review.js";
 import { createAdmin } from "./controllers/adminLogin.js";
 import cookieParser from "cookie-parser";
 
@@ -39,6 +40,9 @@ app.use("/api/community", communityRoute);
 app.use("/api/advice", adviceRoute);
 app.use("/api",adminRoute);
 app.use("/api/mentors",mentorRoute);
+app.use("/api/reviews",reviewRoute);
+
+
 app.listen(PORT, () => {
     console.log(`Server running at ${PORT}`);
 });

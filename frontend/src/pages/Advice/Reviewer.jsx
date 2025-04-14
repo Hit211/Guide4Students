@@ -2,35 +2,30 @@ import { toast } from "sonner"
 import ContactForm from "./ContactForm"
 import MentorCard from "./MentorCard"
 import { useEffect, useState } from "react"
-import axios from "axios"
 import { Loader2 } from "lucide-react"
 import Profile from "./Profile"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchMentors } from "../../redux/mentorSlice"
 
-const Reviewer = ({service,onSubmit,extraFields}) => {  
-    const [loading,setLoading] = useState(false);
-    const [mentor,setMentors] = useState([]);
+const Reviewer = ({service,onSubmit,extraFields}) => {
     const [selectedMentor,setSelectedMentor] = useState(null);
-    const [viewMore,setViewMore] = useState(null);
+    const [viewMore,setViewMore] = useState(false);
+    const dispatch = useDispatch();
 
-    const fetchMentors = async()=>{
-        try {
-            setLoading(true);
-            const response = await axios.get("http://localhost:3000/api/mentors/all");
-            if(response.data.success){
-               setMentors(response.data.mentor);
-            }
-        } catch (error) {
-            toast.error(error);
-        } finally{
-            setLoading(false);
-        }
-    }
+    const {mentors,loading} = useSelector((state)=> state.mentors);
+
     useEffect(()=>{
-        fetchMentors();
-    },[]);
+       if(mentors.length===0){
+        dispatch(fetchMentors());
+       }
+    },[dispatch,mentors.length]);
 
-    const filteredMentors = mentor.filter((mentor)=> mentor.service.includes(service));
 
+    const filteredMentors = mentors.filter((mentor)=> mentor.service.includes(service));
+
+
+    
+    
   return (
     loading? (<Loader2/>) :
     filteredMentors.length>0 ?
@@ -63,7 +58,7 @@ const Reviewer = ({service,onSubmit,extraFields}) => {
             )}
             {
                 viewMore &&
-                <Profile mentor={viewMore} onclose={()=> setViewMore(null)}/>
+                <Profile mentor={viewMore} onclose={()=> setViewMore(false)}/>
             }
 
         </div>

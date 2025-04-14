@@ -1,6 +1,7 @@
 import { FaLinkedin } from "react-icons/fa";
 
 const MentorCard = ({ mentor,setViewMore }) => {
+  
     return (
       <div className="border border-gray-200 w-[186px] rounded-lg shadow-lg p-4 bg-white">
         <div className="flex justify-between mb-3">
@@ -29,7 +30,7 @@ const MentorCard = ({ mentor,setViewMore }) => {
         </div>
   
         <div className="mt-4 flex justify-between items-center">
-          <span className="text-yellow-500 font-semibold text-sm">⭐ {mentor.rating || "No Rating"}</span>
+          <span className="text-yellow-500 font-semibold text-sm">⭐ {Math.ceil(mentor.totalrating)}</span>
           <button 
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm"
           onClick={(e)=>{

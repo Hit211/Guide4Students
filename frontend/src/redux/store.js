@@ -6,7 +6,7 @@ import serviceReducer from "./serviceSlice.js";
 export const store = configureStore({
     reducer:{
         auth: authReducer,
-        mentor: mentorReducer,
+        mentors: mentorReducer,
         service: serviceReducer
     }
 })

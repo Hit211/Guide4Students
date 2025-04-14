@@ -62,7 +62,7 @@ export const addServices = async(req,res)=>{
     try {
         const {name,email,message,service,status} = req.body;
         const servicenew = await Advice.create({
-            name,email,message,service,status
+            name,email,message,service,status:"pending"
         });
         return res.status(201).json({
             status:true,
@@ -70,7 +70,7 @@ export const addServices = async(req,res)=>{
             servicenew
         })
     } catch (error) {
-        console.error("error",error);
+      res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
     }
 }
 
@@ -82,14 +82,14 @@ export const updateStatus = async(req,res)=>{
         const contact = await Advice.findById(id);
         if(!contact){
             return res.status(401).json({
-                success:false,
+              status:false,
                 message:"Contact request not found"
             });
         }
         contact.status = status;
         await contact.save();
         return res.status(201).json({
-            success:true,
+          status:true,
             message:"Status Updated Successdully"
         });
     } catch (error) {

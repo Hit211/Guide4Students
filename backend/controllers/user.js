@@ -13,6 +13,10 @@ export const signUp = async(req,res)=>{
            message:"All fields are required"
         })
 
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+          return res.status(400).json({ status: false, message: "User already exists" });
+        }        
     const hashedPassword = await bcrypt.hash(password,10); 
     
     const adminEmails = ["phit73650@gmail.com"];

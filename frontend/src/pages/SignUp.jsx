@@ -7,7 +7,7 @@ import axios from "axios";
 const Signup = () => {
   const [loading,setLoading] = useState(false);
   const [input, setInput] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -20,7 +20,7 @@ const Signup = () => {
 
   const signupHandler = async (e) => {
     e.preventDefault();
-    if(!input.username || !input.email || !input.password){
+    if(!input.name || !input.email || !input.password){
      toast.error("All Fields are required");
     }
 
@@ -30,15 +30,22 @@ const Signup = () => {
         headers:{"Content-Type":"application/json"},
         withCredentials:true
       });
-      if(response.success){
+      console.log("resdata",response);
+      
+      if(response.data.status){
         toast.success(response.data.message);
-        setInput("");
+        setInput({
+          name: "",
+          email: "",
+          password: ""
+        });        
         navigate("/login");
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    }finally{
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -58,8 +65,8 @@ const Signup = () => {
           <label className="font-medium text-gray-700">Username</label>
           <input
             type="text"
-            name="username"
-            value={input.username}
+            name="name"
+            value={input.name}
             onChange={changeEventHandler}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none my-2"
           />
