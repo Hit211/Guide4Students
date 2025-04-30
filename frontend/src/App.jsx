@@ -52,7 +52,12 @@ const App = () => {
             <MainPage/>
           </ProtectedRoute>
         } />
-        <Route path="/dashboard/advice" element={
+        <Route path="/dashboard/advice/:id" element={
+          <ProtectedRoute>
+            <Advice/>
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/advice/" element={
           <ProtectedRoute>
             <Advice/>
           </ProtectedRoute>

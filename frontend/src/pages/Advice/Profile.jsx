@@ -1,13 +1,13 @@
 import axios from "axios";
 import { MoreVertical, Star } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 
 const ProfileCard = ({ mentor, onclose }) => {
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [data, setData] = useState([]);
-  const user = useSelector((state) => state.auth.user);
-  console.log("user",user);
+  const [menuOpen,setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const user = JSON.parse(localStorage.getItem("loggedIn"));
   
   const getDetails = async () => {
     try {
@@ -24,9 +24,31 @@ const ProfileCard = ({ mentor, onclose }) => {
     getDetails();
   }, [mentor._id]);
 
+  const deletereview = async(id)=>{
+      try {
+        await axios.delete(`${BASE_URL}/reviews/${id}`);
+        getDetails();
+        setMenuOpen(false);
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
   const handleClick = () => {
     onclose();
   };
+
+  useEffect(()=>{
+    const handleClickOutside = (event)=>{
+      if(menuRef.current && !menuRef.current.contains(event.target)){
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown",handleClickOutside);
+    return()=>{
+      document.removeEventListener("mousedown",handleClickOutside)
+    }
+  },[])
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -82,10 +104,21 @@ const ProfileCard = ({ mentor, onclose }) => {
                   {
                     user?._id === review.userId?._id && (
                       <MoreVertical
+                      onClick={()=>  setMenuOpen(menuOpen === index ? null : index)}
                       className="h-5 w-5 text-gray-600 cursor-pointer"
                       />
                     )
                   }
+                   {menuOpen === index && (
+                    <div ref={menuRef} className="absolute right-0 bottom-0 mt-1 bg-white shadow-md border rounded z-10 text-sm">
+                      <button
+                        className="px-3 py-1 hover:bg-red-100 text-red-500 w-full text-left"
+                        onClick={() => deletereview(review._id)}
+                      >
+                        Delete Review
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))

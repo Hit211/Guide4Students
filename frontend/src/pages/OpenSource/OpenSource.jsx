@@ -36,7 +36,7 @@ const OpenSourceContribution = () => {
         <ol className="list-decimal list-inside text-gray-700">
           <li>Find a project that interests you on GitHub or open-source platforms.</li>
           <li>Read the README file and contribution guidelines.</li>
-          <li>Look for beginner-friendly issues labeled <strong>"good first issue"</strong>.</li>
+          <li>Look for beginner-friendly issues labeled <strong>good first issue</strong>.</li>
           <li>Fork the repository and create a new branch.</li>
           <li>Make your changes, follow coding standards, and commit them.</li>
           <li>Submit a pull request and engage with the maintainers.</li>

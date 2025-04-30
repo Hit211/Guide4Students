@@ -14,7 +14,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -46,6 +45,7 @@ const Login = () => {
         toast.success(res.data.message);
         setInput({ email: "", password: "" });
         console.log(res.data);
+        localStorage.setItem("loggedIn", JSON.stringify(res.data.user));
         dispatch(login({user:res.data.user,token:res.data.token}));
         navigate("/dashboard");
       } else {

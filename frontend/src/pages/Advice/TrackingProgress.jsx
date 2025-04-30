@@ -11,12 +11,10 @@ const TrackingProgress = ({ selectedService, onReset }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
   const [assignedMentor,setAssignedMentor] = useState(null);
-  const loggeduser = JSON.parse(localStorage.getItem("user"));
-  const user = loggeduser._id;
-  console.log("userid",user);
-  
+  const user = JSON.parse(localStorage.getItem("loggedIn"));
   const mentor = useSelector((state) => state.mentors.mentors);
-
+  console.log("user",user);
+  
   const getServices = async () => {
     try {
       const res = await axios.get("http://localhost:3000/api/advice/allservices");
@@ -59,7 +57,7 @@ const TrackingProgress = ({ selectedService, onReset }) => {
 
     try {
       await axios.post("http://localhost:3000/api/reviews/create", {
-        userId:user,
+        userId:user?._id,
         mentorId: assignedMentor._id,
         rating,
         comment
