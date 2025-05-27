@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link as ScrollLink } from "react-scroll";
-import { Link as RouterLink } from "react-router-dom"; 
-import logoicon  from "../../../src/assets/Logo.webp";
+import { Link as RouterLink } from "react-router-dom";
+import logoicon from "../../../src/assets/Logo02.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,23 +24,23 @@ const Intro = () => {
             trigger: section,
             start: "top 80%",
             end: "top 30%",
-            toggleActions: "play none none none", 
-            once:true
+            toggleActions: "play none none none",
+            once: true
           },
         }
       );
     });
   }, []);
-  
+
 
   return (
     <div>
       <div className="w-full bg-black shadow-md fixed top-0 left-0 z-50">
         <div className="w-[92%] relative mx-auto h-[70px] flex justify-between items-center p-5">
-        <div className="flex items-center gap-3">
-  <img src={logoicon} alt="Logo" className="w-[40px] h-[40px] object-contain"/>
-  <span className="text-2xl font-bold text-white">Guide4Students</span>
-</div>
+          <div className="flex items-center gap-2">
+            <img src={logoicon} alt="Logo" className="w-[40px] h-[40px] object-contain" />
+            <span className="text-2xl font-bold text-white">Guide4Students</span>
+          </div>
           <div className="md:flex hidden items-center gap-8">
             <ul className="flex gap-8 text-lg font-medium text-white">
               <li>
@@ -49,7 +49,7 @@ const Intro = () => {
                   smooth={true}
                   duration={500}
                   className="hover:text-yellow-500 transition duration-300 ease-in-out hover:scale-105 cursor-pointer hover:border-b-4 hover:border-yellow-500"
-                >  
+                >
                   Home
                 </ScrollLink>
               </li>
@@ -122,7 +122,7 @@ const Intro = () => {
         {/* Buckets Section */}
         <div
           id="buckets"
-          ref={(el)=> (sectionRefs.current[0]=el)}
+          ref={(el) => (sectionRefs.current[0] = el)}
           className="max-w-screen-xl mx-auto py-16 text-center text-white"
         >
           <h2 className="text-3xl font-extrabold mb-4 text-yellow-400 drop-shadow-lg">
@@ -190,9 +190,9 @@ const Intro = () => {
         </div>
       </div>
 
-      <div 
-      ref={(el)=> (sectionRefs.current[1]=el)}
-      id="about" className="bg-black min-h-screen py-16">
+      <div
+        ref={(el) => (sectionRefs.current[1] = el)}
+        id="about" className="bg-black min-h-screen py-16">
         <div className="max-w-screen-xl mx-auto px-6">
           {/* Title */}
           <h1 className="text-4xl font-extrabold text-yellow-500 mb-12 text-center">
@@ -253,9 +253,9 @@ const Intro = () => {
         </div>
       </div>
       {/* Contact Section */}
-      <div id="contact" 
-      ref={(el)=> (sectionRefs.current[2]=el)}
-      className="bg-black min-h-screen py-16">
+      <div id="contact"
+        ref={(el) => (sectionRefs.current[2] = el)}
+        className="bg-black min-h-screen py-16">
         <div className="max-w-screen-xl mx-auto px-6">
           {/* Title Section */}
           <div className="text-center mb-12">
@@ -268,9 +268,9 @@ const Intro = () => {
           </div>
 
           {/* Form Section */}
-          <form 
-          ref={(el)=> (sectionRefs.current[3]=el)}
-          className="bg-black p-8 rounded-lg shadow-2xl max-w-xl mx-auto space-y-6">
+          <form
+            ref={(el) => (sectionRefs.current[3] = el)}
+            className="bg-black p-8 rounded-lg shadow-2xl max-w-xl mx-auto space-y-6">
             <div className="mb-4">
               <input
                 type="text"
